@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
+{% load colorize %}
 {% block content %}
     <!-- Modal -->
     <div class="modal fade" id="AddItemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -24,9 +25,11 @@
     <div class="row">
         <div class="col text-left">
             <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#AddItemModal">Add</button>
-            <button class="btn btn-info">Update</button>
+            <a href="{% url 'update' %}">
+                <button class="btn btn-info">Update</button>
+            </a>
         </div>
-        <div class="col text-right">
+        <div class="col" style="text-align:right">
             <div>
                 Total number of items being tracked: {{ items_number }}
             </div>
@@ -40,12 +43,15 @@
             <div class="card mt-3">
                 <div class="card-header">
                     <h5>{{ item.name }}</h5>
+                    <a href="{% url 'delete' item.pk %}">
+                        <button class="btn btn-danger">delete?</button>
+                    </a>
                 </div>
                 <div class="card-body">
                     <div class="blockquote">
                         <div>current price ($): {{ item.current_price }}</div>
                         <div>old price ($): {{ item.old_price }}</div>
-                        <div>difference ($): {{ item.price_difference }}</div>
+                        <div>difference ($): {{ item.price_difference|colorize }}</div>
                         <div>link: <a href="{{ item.url }}">{{ item.url }}</a></div>
                     </div>
                 </div>

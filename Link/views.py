@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import AddLinkForm
 from .models import Link
+from django.views.generic import DetailView
+from django.urls import reverse_lazy
 
 
 # Create your views here.
@@ -39,3 +41,15 @@ def home_view(request):
     }
 
     return render(request, 'Link/main.html', context)
+
+
+class LinkDeleteView(DetailView):
+    model = Link
+    template_name = 'Link/confirm_delete.html'
+    success_url = reverse_lazy('home_view')
+
+def update_prices(request):
+    qs = Link.objects.all()
+    for link in qs:
+        link.save()
+    return redirect('home_view')
